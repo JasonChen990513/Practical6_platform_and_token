@@ -1,5 +1,5 @@
 // contract address and abi
-const contractAddress = "0xA053B11E46D86eF0F461f2014D5ac7b895505670";
+const contractAddress = "0x1b07025755daDe544DA64a9649CAfbb8Fa596d8E";
 const contractABI =[
     {
         "inputs": [],
@@ -898,6 +898,9 @@ async function initializePage(){
             }else{
                 statusText.textContent = `Player ${result} wins!`;
                 document.getElementById("tips").textContent = "Game Over";
+                if(gameInformation._winer.toLowerCase() == CurrentUserAddress){
+                    alert(`you win ${gameInformation._rewardAmount/oneEther} token`)
+                }    
             }
             //get the win result if got, and display
             const finalWinOption = gameInformation._finalWinOption;
@@ -909,7 +912,6 @@ async function initializePage(){
                     }
                 }
             }
-
 
             //remove cell listener to avoid player continue to play
             cells.forEach(cell => cell.removeEventListener("click", cellClicked));
@@ -1007,4 +1009,27 @@ function checkGame(index){
 //redirect to home page
 function goToHomePage() {
     window.location.href = "index.html";
-  }
+}
+
+
+const faucetButton = document.getElementById("faucet");
+faucetButton.onclick = async() =>{
+    //claim token
+    try {
+        await writeGameContract.faucetToken();
+    } catch (e) {
+        err = e.data.message;
+        alert(err);
+    }
+    
+    //display message according the transfer status
+    readGameContract.on("faucet",(msgSender, successful)=>{
+        if(msgSender.toLowerCase() == CurrentUserAddress){
+            if(successful){
+                alert("claim toke successful")
+            } else {
+                alert("Something worng. Pls try again")
+            }
+        }
+    })
+}

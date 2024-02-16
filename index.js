@@ -1,5 +1,5 @@
 //contract address and abi
-const contractAddress = "0xA053B11E46D86eF0F461f2014D5ac7b895505670";
+const contractAddress = "0x1b07025755daDe544DA64a9649CAfbb8Fa596d8E";
 const contractABI =[
     {
         "inputs": [],
@@ -1173,9 +1173,11 @@ const readTokenContract = new ethers.Contract(TTTTokenAddress, TTTTokenABI, prov
 
 let CurrentUserAddress;//store current user address
 
-let gameIndex; 
-let gameLength;
+let gameIndex;  //store game array
+let gameLength; //current game array length
+
 getGameLength();
+//get the game data
 async function getGameLength(){
     gameIndex = await readGameContract.getAllGameInformation();
     gameLength = gameIndex.length;
@@ -1183,7 +1185,33 @@ async function getGameLength(){
 }
 //set create room button listener
 document.getElementById("createGame").onclick = () =>{
-    createNewRoom(100);
+    let userInputValid = false;
+    let betAmount;
+
+
+    betAmount = prompt("How much you want to bet?\nAt least 10" );
+    console.log(!(isNaN(betAmount)));
+    console.log(betAmount);
+    if (betAmount !== null && isNaN(betAmount)) {
+        // User did not enter a number, display an error message
+        alert("Please enter a valid number.");
+        
+    }
+    if (betAmount < 10 && !(isNaN(betAmount))) {
+        // User did not enter a number, display an error message
+        alert("At least put 10 token.");
+    } 
+
+    if(!(isNaN(betAmount)) && betAmount >= 10){
+        console.log("should out")
+        userInputValid = true;
+    }
+    console.log(userInputValid);
+
+
+    if(userInputValid){
+        createNewRoom(betAmount);
+    }
 }
 
 //set listener when new room create and reflash the page
@@ -1224,9 +1252,9 @@ async function createNewRoom(amount){
     const amountInWei = ethers.utils.parseEther(amount.toString());
     
     writeTokenContract.approve(contractAddress, amountInWei)
-    .then((tx) => {
-        console.log("Transaction hash:", tx.hash);
-        return tx.wait();
+    .then((transaction) => {
+        console.log("Transaction hash:", transaction.hash);
+        return transaction.wait();
     })
     .then((receipt) => {
         console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
@@ -1242,9 +1270,11 @@ async function joinGame(index, amount){
     const amountInWei = ethers.utils.parseEther(amount.toString());
     
     writeTokenContract.approve(contractAddress, amountInWei)
-    .then((tx) => {
-        console.log("Transaction hash:", tx.hash);
-        return tx.wait();
+    .then((transaction) => {
+        console.log("Transaction hash:", transaction.hash);
+        alert("Please wait a minute");
+
+        return transaction.wait();
     })
     .then((receipt) => {
         console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
@@ -1276,7 +1306,8 @@ document.addEventListener("DOMContentLoaded", async function() {
         const betToken = document.createElement("p");
         const gameStatus = document.createElement("p");
 
-        roomIndex.textContent = `TTT Room ${index+1}`
+        //set information to block
+        roomIndex.textContent = `TTT Room ${parseInt(index) + 1}`; 
         player1address.textContent = "Player 1: " + gameinfo._player1address;
         player2address.textContent = "Player 2: " + gameinfo._player2address;
         betToken.textContent = "Need bet " + gameinfo._player1Bet/oneEther + " TTT Token";
@@ -1295,21 +1326,26 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.log(index)
         // Add click event listener to each block
         block.addEventListener("click", () => {
-            if(gameinfo._player2address == defaultAddress){
-                //ask user want to join this game
-                const userResponse = confirm("Do you want to join the game?");
-                if (userResponse) {
-                    joinGame(index, 100);
-                    alert("Please wait a minute");
-                }
-            } else {
-                //ask user want to watch this game
-                const userResponse = confirm(`Go to room ${parseInt(index) + 1} and player are: \n${gameinfo._player1address}\n${gameinfo._player2address}`);
-                if (userResponse) {
-                    goToGamePage(index);
-                }
+            if(gameinfo._player1address.toLowerCase() == CurrentUserAddress || gameinfo._player2address.toLowerCase() == CurrentUserAddress){
+                goToGamePage(index);
             }
-            
+            else{
+                if(gameinfo._player2address == defaultAddress){
+                    //ask user want to join this game
+                    const userResponse = confirm("Do you want to join the game?");
+                    if (userResponse) {
+                        joinGame(index, (gameinfo._player1Bet/oneEther));
+
+                        
+                    }
+                } else {
+                    //ask user want to watch this game
+                    const userResponse = confirm(`Go to room ${parseInt(index) + 1} and player are: \n${gameinfo._player1address}\n${gameinfo._player2address}`);
+                    if (userResponse) {
+                        goToGamePage(index);
+                    }
+                }
+            }            
         });
         //append information to block
         block.appendChild(roomIndex);
@@ -1327,6 +1363,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 function goToGamePage(index){
     window.location.href = `gamePage.html?param1=${index}`;
 }
+
 onInit();
 //get the current user's wallet address
 async function onInit() {
