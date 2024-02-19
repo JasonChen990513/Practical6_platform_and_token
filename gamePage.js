@@ -708,13 +708,379 @@ const contractABI =[
         "type": "function"
     }
 ];
+const TTTTokenAddress = "0x927E818dDCaB12d025495B228A4ce1dAE82798Ec";
+const TTTTokenABI = [
+    {
+        "inputs": [],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            }
+        ],
+        "name": "allowance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "subtractedValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "decreaseAllowance",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "spender",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "addedValue",
+                "type": "uint256"
+            }
+        ],
+        "name": "increaseAllowance",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "tradeOpen",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "transfer",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "sender",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "recipient",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "whitelisted",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
 const defaultAddress = "0x0000000000000000000000000000000000000000";
+const oneEther = 1000000000000000000;
 
 // declare call contract element and crate contract object
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const signer = provider.getSigner();
 const writeGameContract = new ethers.Contract(contractAddress, contractABI, signer);
 const readGameContract = new ethers.Contract(contractAddress, contractABI, provider);
+const writeTokenContract = new ethers.Contract(TTTTokenAddress, TTTTokenABI, signer);
+const readTokenContract = new ethers.Contract(TTTTokenAddress, TTTTokenABI, provider);
 let CurrentUserAddress; //store current user address
 
 const cells = document.querySelectorAll(".cell"); //
@@ -723,8 +1089,11 @@ const restartBtn = document.querySelector("#restartBtn");
 const joinBtn = document.getElementById("joinGame");
 
 //get the parameter from index
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search); 
 const gameId = params.get('param1');
+
+
+
 
 console.log(`this is game ${parseInt(gameId)+1}`);
 
@@ -738,19 +1107,18 @@ document.getElementById("joinGame").addEventListener('click',() => {
 
 //call the smart contract to join the game
 async function joinGame(){
-    await provider.send("eth_requestAccounts", []);
-    //call contract
-    try{
-        await writeGameContract.joinGame(gameId);
-    } catch(e){
-        //catch the error message from smart contract
-        err = e.data.message;
-        alert(err);
+    const gameInfo = await readGameContract.getGameInformation(gameId);
+    console.log(gameInfo._player1Bet);
+    const userResponse = confirm(`Do you want to join the game? You need to bet ${gameInfo._player1Bet/oneEther} token`);
+    if (userResponse) {
+        // //call contract
+        joinGameContract(gameId, (gameInfo._player1Bet/oneEther));
     }
 }
 
 //initialize Page
 async function initializePage(){
+    restartBtn.disabled = true;
     //get the current wallet address
     onInit();
     //get game information from smart contract and store into object
@@ -768,6 +1136,11 @@ async function initializePage(){
     //get current player address
     let player1address = gameInfo.player1address;
     let player2address = gameInfo.player2address;
+    // get current player
+    let player = gameInfo.currentPlayer;
+
+    //display current player turn
+    statusText.textContent = `${player}'s turn`;
 
     console.log(gameInformation);
     console.log(gameInfo);
@@ -789,12 +1162,19 @@ async function initializePage(){
         //disable restart button
         restartBtn.disabled = true;
         document.getElementById("tips").textContent = "Game is Starting";
+        if(player == "X"){
+            alert("Player 1 Round!");
+        }else{
+            alert("Player 2 Round!");
+        }
     } else {
-        //if game is not activate disable join button
-        joinBtn.disabled = true;
-        //if player are the player1 or player2 in the game and is draw, then allow restart
-        //if gameInfo.winer == defaultAddress meaning is draw 
-        if(gameInfo.winer == defaultAddress){
+        //allow player join if player 2 are not exist
+        if(gameInfo.player2address == defaultAddress){
+            joinBtn.disabled = false;
+            document.getElementById("tips").textContent = "Waiting for player 2 join";
+        }else if(gameInfo.winer == defaultAddress){
+            //if player are the player1 or player2 in the game and is draw, then allow restart
+            //if gameInfo.winer == defaultAddress meaning is draw 
             //check the player is player 1 or player 2
             if(CurrentUserAddress == player1address.toLowerCase() || CurrentUserAddress == player2address.toLowerCase()){
                 restartBtn.disabled = false;
@@ -803,9 +1183,16 @@ async function initializePage(){
                 restartBtn.disabled = true;
                 document.getElementById("tips").textContent = "Wait player restart the game and play again";
             }
-        }else{
+        } else {
             restartBtn.disabled = true;
+            joinBtn.disabled = true;
             document.getElementById("tips").textContent = "Game Over";
+            if(gameInfo.winer == gameInfo.player1address){
+                statusText.textContent = `Player 1 wins!`;
+            } else {
+                statusText.textContent = `Player 2 wins!`;
+            }
+            
         }
         
     }
@@ -821,9 +1208,7 @@ async function initializePage(){
     }else{
         document.getElementById("player2address").textContent = "O Player2: " + player2address;
     }
-    //display current player turn
-    let player = gameInfo.currentPlayer;
-    statusText.textContent = `${player}'s turn`;
+
     //if current user are the player in this match, allow the user to click the grid
     if(player == "X"){
         if(CurrentUserAddress == player1address.toLowerCase()){
@@ -888,14 +1273,22 @@ async function initializePage(){
     })
     // display the result and according to result to enable button
     readGameContract.on("showResult",async (result, gameID)=>{
+        console.log("restart log start")
+        console.log("game result: "+result)
+        console.log("game id: " + gameID)
+        console.log("index is: " + gameId)
         if(checkGame(gameID)){
+            console.log("in side the condition check")
             const gameInformation = await readGameContract.getGameInformation(gameId); 
             //display the message content 
             if(result == "Draw"){
+                console.log("in draw")
                 statusText.textContent = `Draw!`;
                 restartBtn.disabled = false;
                 document.getElementById("tips").textContent = "You can restart the game and play again";
+                alert("This game draw and you can click the restart button to play again");
             }else{
+                console.log("got winner")
                 statusText.textContent = `Player ${result} wins!`;
                 document.getElementById("tips").textContent = "Game Over";
                 if(gameInformation._winer.toLowerCase() == CurrentUserAddress){
@@ -904,6 +1297,7 @@ async function initializePage(){
             }
             //get the win result if got, and display
             const finalWinOption = gameInformation._finalWinOption;
+            console.log(finalWinOption)
             if(finalWinOption.length = 3){
                 for(let i = 0; i < 9;i++){
                     if(i == finalWinOption[0] || i == finalWinOption[1] || i == finalWinOption[2]){
@@ -916,7 +1310,7 @@ async function initializePage(){
             //remove cell listener to avoid player continue to play
             cells.forEach(cell => cell.removeEventListener("click", cellClicked));
         }
-
+        console.log("restart log end")
     })
 
     //change html content when user change
@@ -1011,9 +1405,69 @@ function goToHomePage() {
     window.location.href = "index.html";
 }
 
-
+//set on click listener
 const faucetButton = document.getElementById("faucet");
 faucetButton.onclick = async() =>{
+    claimToken();
+}
+
+
+//call join game function on smart contract
+async function joinGameContract(index, amount){
+
+    const amountInWei = ethers.utils.parseEther(amount.toString());
+
+    if(await checkPlayerBalance(amount)){
+        //if balance enough
+        //set approve amount of the contract
+        writeTokenContract.approve(contractAddress, amountInWei)
+        .then((transaction) => {
+            console.log("Transaction hash:", transaction.hash);
+            return transaction.wait();
+        })
+        .then((receipt) => {
+            console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
+            //call join function
+            writeGameContract.joinGame(index, amountInWei);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    } else {
+        //balance not enough. need to claim the token to play
+        console.log("condition false")
+        alert("you balance is not enough");
+        let userInput = confirm("Do you want to go to claim token?");
+        if(userInput){
+            claimToken();
+        }
+    }
+    
+}
+//check player token balance
+async function checkPlayerBalance(amount){
+    let balance = 0;
+    try {
+        console.log("address is " + CurrentUserAddress)
+        //balance = ethers.utils.parseEther((await readTokenContract.balanceOf(CurrentUserAddress)).toString());
+        balance = await readTokenContract.balanceOf(CurrentUserAddress);
+        console.log("now got " + balance.toString());
+        //player input amount must > their balance and balance must more than 0
+        if(amount > (balance/oneEther) || balance <= 0){
+            console.log("condition false")
+            return false;
+        } else {
+            console.log("condition true")
+            return true;
+        }
+
+    } catch (error) {
+        //display error message
+        console.log(error)
+    } 
+}
+// let player get free token
+async function claimToken(){
     //claim token
     try {
         await writeGameContract.faucetToken();
@@ -1026,7 +1480,7 @@ faucetButton.onclick = async() =>{
     readGameContract.on("faucet",(msgSender, successful)=>{
         if(msgSender.toLowerCase() == CurrentUserAddress){
             if(successful){
-                alert("claim toke successful")
+                alert("token claim successful")
             } else {
                 alert("Something worng. Pls try again")
             }

@@ -1176,7 +1176,7 @@ let CurrentUserAddress;//store current user address
 let gameIndex;  //store game array
 let gameLength; //current game array length
 
-getGameLength();
+
 //get the game data
 async function getGameLength(){
     gameIndex = await readGameContract.getAllGameInformation();
@@ -1189,9 +1189,7 @@ document.getElementById("createGame").onclick = () =>{
     let betAmount;
 
 
-    betAmount = prompt("How much you want to bet?\nAt least 10" );
-    console.log(!(isNaN(betAmount)));
-    console.log(betAmount);
+    betAmount = prompt("How much token you want to bet?\nAt least 10" );
     if (betAmount !== null && isNaN(betAmount)) {
         // User did not enter a number, display an error message
         alert("Please enter a valid number.");
@@ -1206,15 +1204,13 @@ document.getElementById("createGame").onclick = () =>{
         console.log("should out")
         userInputValid = true;
     }
-    console.log(userInputValid);
-
 
     if(userInputValid){
         createNewRoom(betAmount);
     }
 }
 
-//set listener when new room create and reflash the page
+//set listener when new room create and reflash the page    
 readGameContract.on("createRoom",async (gameID)=>{
     let id = ethers.utils.formatUnits(gameID, 0)
     // console.log("trigger")
@@ -1251,38 +1247,60 @@ readGameContract.on("joinRoom",(gameinfo, gameID)=>{
 async function createNewRoom(amount){
     const amountInWei = ethers.utils.parseEther(amount.toString());
     
-    writeTokenContract.approve(contractAddress, amountInWei)
-    .then((transaction) => {
-        console.log("Transaction hash:", transaction.hash);
-        return transaction.wait();
-    })
-    .then((receipt) => {
-        console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
-        writeGameContract.createGameRoom(amountInWei);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+    if(await checkPlayerBalance(amount)){
+        //if balance enough
+        console.log("condition true")
+        writeTokenContract.approve(contractAddress, amountInWei)
+        .then((transaction) => {
+            console.log("Transaction hash:", transaction.hash);
+            return transaction.wait();
+        })
+        .then((receipt) => {
+            console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
+            writeGameContract.createGameRoom(amountInWei);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    } else {
+        //balance not enough. need to claim the token to play
+        console.log("condition false")
+        alert("you balance is not enough");
+        let userInput = confirm("Do you want to go to claim token?");
+        if(userInput){
+            claimToken();
+        }
+    }
 }
 //call join game function on smart contract
 async function joinGame(index, amount){
 
     const amountInWei = ethers.utils.parseEther(amount.toString());
-    
-    writeTokenContract.approve(contractAddress, amountInWei)
-    .then((transaction) => {
-        console.log("Transaction hash:", transaction.hash);
-        alert("Please wait a minute");
 
-        return transaction.wait();
-    })
-    .then((receipt) => {
-        console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
-        writeGameContract.joinGame(index, amountInWei);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+    if(await checkPlayerBalance(amount)){
+        //if balance enough
+        console.log("condition true")
+        writeTokenContract.approve(contractAddress, amountInWei)
+        .then((transaction) => {
+            console.log("Transaction hash:", transaction.hash);
+            return transaction.wait();
+        })
+        .then((receipt) => {
+            console.log("Transaction confirmed. Gas used:", receipt.gasUsed.toString());
+            writeGameContract.joinGame(index, amountInWei);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    } else {
+        //balance not enough. need to claim the token to play
+        console.log("condition false")
+        alert("you balance is not enough");
+        let userInput = confirm("Do you want to go to claim token?");
+        if(userInput){
+            claimToken();
+        }
+    }
     
 }
 // set event listener to each block
@@ -1310,7 +1328,18 @@ document.addEventListener("DOMContentLoaded", async function() {
         roomIndex.textContent = `TTT Room ${parseInt(index) + 1}`; 
         player1address.textContent = "Player 1: " + gameinfo._player1address;
         player2address.textContent = "Player 2: " + gameinfo._player2address;
-        betToken.textContent = "Need bet " + gameinfo._player1Bet/oneEther + " TTT Token";
+        if(gameinfo._player2address.toLowerCase() == defaultAddress){
+            betToken.textContent = "Need bet " + gameinfo._player1Bet/oneEther + " TTT Tokens to join the game";
+        } else if (gameinfo._winer == defaultAddress){
+            betToken.textContent = "Game reward is " + gameinfo._rewardAmount*2/oneEther + " TTT Tokens";
+        } else {
+            if(gameinfo.player1address == gameinfo._winer){
+                betToken.textContent = "player 1 win " + gameinfo._rewardAmount*2/oneEther + " TTT Tokens";
+            } else {
+                betToken.textContent = "player 2 win " + gameinfo._rewardAmount*2/oneEther + " TTT Tokens";
+            }
+        }
+        
         if(gameinfo._player2address == defaultAddress){
             gameStatus.textContent = "Waiting Player 2 join"
         } else if(gameinfo._winer == defaultAddress) {
@@ -1332,11 +1361,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             else{
                 if(gameinfo._player2address == defaultAddress){
                     //ask user want to join this game
-                    const userResponse = confirm("Do you want to join the game?");
+                    const userResponse = confirm(`Do you want to join the game? You need to bet ${gameinfo._player1Bet/oneEther} token`);
                     if (userResponse) {
                         joinGame(index, (gameinfo._player1Bet/oneEther));
-
-                        
                     }
                 } else {
                     //ask user want to watch this game
@@ -1364,12 +1391,12 @@ function goToGamePage(index){
     window.location.href = `gamePage.html?param1=${index}`;
 }
 
-onInit();
+
 //get the current user's wallet address
 async function onInit() {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
-    console.log(account);
+    console.log("current address: "+account);
     CurrentUserAddress = account;
 
     //  window.ethereum.on('accountsChanged', function (accounts) {
@@ -1380,7 +1407,11 @@ async function onInit() {
 }
 
 const faucetButton = document.getElementById("faucet");
-faucetButton.onclick = async() =>{
+faucetButton.onclick = () =>{
+    claimToken();
+}
+
+async function claimToken(){
     //claim token
     try {
         await writeGameContract.faucetToken();
@@ -1393,7 +1424,7 @@ faucetButton.onclick = async() =>{
     readGameContract.on("faucet",(msgSender, successful)=>{
         if(msgSender.toLowerCase() == CurrentUserAddress){
             if(successful){
-                alert("claim toke successful")
+                alert("token claim successful")
             } else {
                 alert("Something worng. Pls try again")
             }
@@ -1401,6 +1432,34 @@ faucetButton.onclick = async() =>{
     })
 }
 
+
+initPage();
+function initPage(){
+    onInit();
+    getGameLength();
+
+}
+
+async function checkPlayerBalance(amount){
+    let balance = 0;
+    try {
+        console.log("address is " + CurrentUserAddress)
+        //balance = ethers.utils.parseEther((await readTokenContract.balanceOf(CurrentUserAddress)).toString());
+        balance = await readTokenContract.balanceOf(CurrentUserAddress);
+        console.log("now got " + balance.toString());
+
+        if(amount > (balance/oneEther) || balance <= 0){
+            console.log("condition false")
+            return false;
+        } else {
+            console.log("condition true")
+            return true;
+        }
+
+    } catch (error) {
+        console.log(error)
+    } 
+}
 // buyTokenButton.onclick = () => {
 //     buyToken();
 // }
