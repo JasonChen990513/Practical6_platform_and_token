@@ -1166,6 +1166,7 @@ const defaultAddress = "0x0000000000000000000000000000000000000000";
 const oneEther = 1000000000000000000;
 const writeTokenContract = new ethers.Contract(TTTTokenAddress, TTTTokenABI, signer);
 const readTokenContract = new ethers.Contract(TTTTokenAddress, TTTTokenABI, provider);
+const { ethereum } = window;
 
 // const writebuyTokenContract = new ethers.Contract(buyTokenAddress, buyTokenABI, signer);
 // const readbuyTokenContract = new ethers.Contract(buyTokenAddress, buyTokenABI, provider);
@@ -1314,7 +1315,6 @@ document.addEventListener("DOMContentLoaded", async function() {
   
     // Generate blocks dynamically
     gameInfoALL.forEach((gameinfo, index) => {
-        console.log((gameinfo._player1Bet).toString())
         //set the information to block
         const block = document.createElement("div");
         block.classList.add("block");
@@ -1352,7 +1352,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
             
         }
-        console.log(index)
         // Add click event listener to each block
         block.addEventListener("click", () => {
             if(gameinfo._player1address.toLowerCase() == CurrentUserAddress || gameinfo._player2address.toLowerCase() == CurrentUserAddress){
@@ -1394,7 +1393,7 @@ function goToGamePage(index){
 
 //get the current user's wallet address
 async function onInit() {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     const account = accounts[0];
     console.log("current address: "+account);
     CurrentUserAddress = account;
@@ -1437,7 +1436,7 @@ initPage();
 function initPage(){
     onInit();
     getGameLength();
-
+    checkNetwork();
 }
 
 async function checkPlayerBalance(amount){
@@ -1460,6 +1459,76 @@ async function checkPlayerBalance(amount){
         console.log(error)
     } 
 }
+//check the network 
+function checkNetwork(){
+    // Check if MetaMask is installed and enabled
+    if (typeof ethereum !== 'undefined' && ethereum.isMetaMask) {
+        // Request access to the user's MetaMask accounts
+        ethereum.request({ method: 'eth_chainId' })
+        .then(chainId => {
+            // Check if the network is the desired network
+            console.log("this is "+chainId)
+            if (chainId !== '0x1eb4') { 
+                // Prompt the user to switch networks
+                if (confirm('Please switch to the Maal testnet to continue.')) {
+                    SwitchChainToMaal();
+                } else {
+                    alert("You need to switch to Maal testnet to contunue.")
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    } else {
+        // MetaMask is not installed or not enabled
+        alert('Please install MetaMask to use this feature.');
+    }
+}
+//if not maal test net then switch to maal test net
+async function SwitchChainToMaal(){
+    try {
+        console.log("in try switch network")
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: '0x1eb4' }],
+      });
+      location.reload();
+    } catch (switchError) {
+      if (switchError.code === 4902) { // 4902 mean the network not at wallet
+        //request to add the chain to wallet here
+        if(confirm("Maal testnet Chain hasn't been added to the wallet! Do you want to add it now?")){
+            addMaalTestNetwork();
+        }
+        
+      }
+    }
+}
+//if no in wallet, add network to wallet
+async function addMaalTestNetwork() {
+    try {
+      const result = await window.ethereum.request({
+        method: "wallet_addEthereumChain",
+        params: [{
+          chainId: "0x1eb4",
+          rpcUrls: ["https://rpc-bntest.maalscan.io"],
+          chainName: "MaalChain Testnet",
+          nativeCurrency: {
+            name: "MAAL",
+            symbol: "MAAL",
+            decimals: 18
+          },
+          blockExplorerUrls: ["https://testnet.maalscan.io/"]
+        }]
+      });
+      alert("Add network successfully")
+      location.reload();
+    } catch (error){
+      alert("Something wrong "+error)
+      
+    }
+}    
+
 // buyTokenButton.onclick = () => {
 //     buyToken();
 // }
