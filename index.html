@@ -5,29 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"
   type="application/javascript"></script>   
+  <link href="./output.css" rel="stylesheet">
   <title>TTT Home Page</title>
   <style>
-    body {
+    /* body {
       font-family: 'Arial', sans-serif;
       background-color: #f4f4f4;
       margin: 0;
       align-items: center;
       justify-content: center;
       height: 100vh;
-    }
+    } */
 
-    nav {
+    /* nav {
     background-color: #3498db;
     padding: 10px;
     text-align: right;
-    }
+    } */
 
-    nav a {
+    /* nav a {
         color: #fff;
         text-decoration: none;
         margin-right: 10px;
         cursor: pointer;
-    }
+    } */
 
     #blockContainer {
       margin: 60px;
@@ -63,34 +64,36 @@
       margin-top: 10px;
     }
 
-    .Container{
+    /* .Container{
       display: flex;
       align-items: center;
       justify-content: center;
       margin-top: 10px;
-    }
+    } */
 
     .block:hover {
       background-color: #2980b9;
+      scale: 105%;
     }
   </style>
 </head>
-<body>
-  <nav>
+<body class="font-Nunito text-center bg-darkbg text-secondary-100">
+  <nav class="bg-primary flex justify-end p-1">
     <!-- Home button -->
-    <a id="faucet">Get Free Token</a>
-    <a href="index.html">Home</a>
-    
-</nav>
+    <a id="faucet" class="text-white mr-5 cursor-pointer transform hover:scale-110">Get Free Token</a>
+    <a href="index.html" class="text-white mr-2 transform hover:scale-110">Home</a>
+    <!-- Add additional navigation links as needed -->
+  </nav>
+
   <div class="Container" >
-    <p>Click the button to create new Room or click the block to join game. <br> If the room is full, you still can join the room and view the game.</p>
+    <p class="transform hover:scale-105">Click the button to create new Room or click the block to join game. <br> If the room is full, you still can join the room and view the game.</p>
   </div>
   <div class="Container">
-    <p>Will inform you when the game starts.</p>
+    <p class="transform hover:scale-105">Will inform you when the game starts.</p>
   </div>
 
-  <div id="createGameContainer">
-    <button id="createGame">Create New Room</button>
+  <div id="createGameContainer" class="">
+    <button id="createGame" class="btn bg-secondary-100 text-secondary-200 hover:shadow-inner transform hover:scale-125 hover:opacity-50 transition ease-out duration-300 my-3">Create New Room</button>
   </div>
  
   <div id="blockContainer"></div>

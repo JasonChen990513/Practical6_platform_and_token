@@ -1,10 +1,128 @@
 //contract address and abi
-const contractAddress = "0x1b07025755daDe544DA64a9649CAfbb8Fa596d8E";
+const contractAddress = "0x8c59117A723F410644297Ac22b876941dfd77CF8";
 const contractABI =[
     {
         "inputs": [],
         "stateMutability": "nonpayable",
         "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "ids",
+                "type": "uint256[]"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256[]",
+                "name": "values",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "TransferBatch",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "TransferSingle",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "value",
+                "type": "string"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "URI",
+        "type": "event"
     },
     {
         "anonymous": false,
@@ -255,12 +373,73 @@ const contractABI =[
     },
     {
         "inputs": [],
+        "name": "TTT1155Token",
+        "outputs": [
+            {
+                "internalType": "contract ERC1155",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "TTTToken",
         "outputs": [
             {
                 "internalType": "contract IERC20",
                 "name": "",
                 "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address[]",
+                "name": "accounts",
+                "type": "address[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "ids",
+                "type": "uint256[]"
+            }
+        ],
+        "name": "balanceOfBatch",
+        "outputs": [
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
             }
         ],
         "stateMutability": "view",
@@ -583,6 +762,30 @@ const contractABI =[
     {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            }
+        ],
+        "name": "isApprovedForAll",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "internalType": "uint256",
                 "name": "gameId",
                 "type": "uint256"
@@ -638,6 +841,109 @@ const contractABI =[
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "ids",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "amounts",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "safeBatchTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }
+        ],
+        "name": "setApprovalForAll",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes4",
+                "name": "interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "totalAmount",
         "outputs": [
@@ -671,6 +977,25 @@ const contractABI =[
                 "internalType": "uint256",
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "uri",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
             }
         ],
         "stateMutability": "view",
@@ -1317,7 +1642,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     gameInfoALL.forEach((gameinfo, index) => {
         //set the information to block
         const block = document.createElement("div");
+        const gamedtatus = document.createElement("div");
+        gamedtatus.classList.add("currentState");
         block.classList.add("block");
+        block.classList.add("relative");
         const roomIndex = document.createElement("p");
         const player1address = document.createElement("p");
         const player2address = document.createElement("p");
@@ -1341,14 +1669,18 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         
         if(gameinfo._player2address == defaultAddress){
-            gameStatus.textContent = "Waiting Player 2 join"
+            gameStatus.textContent = "Waiting Player 2 join";
+            gamedtatus.textContent = "Waiting Player 2 join";
         } else if(gameinfo._winer == defaultAddress) {
             gameStatus.textContent = "Playing Game"
+            gamedtatus.textContent = "Playing Game"
         } else {
             if(gameinfo._winer == gameinfo._player1address){
                 gameStatus.textContent = `Winer is player 1 ${gameinfo._winer}`
+                gamedtatus.textContent = `Winer is player 1`
             } else {
                 gameStatus.textContent = `Winer is player 2 ${gameinfo._winer}`
+                gamedtatus.textContent = `Winer is player 2`
             }
             
         }
@@ -1379,6 +1711,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         block.appendChild(player2address);
         block.appendChild(betToken);
         block.appendChild(gameStatus);
+        block.appendChild(gamedtatus);
         // Append the block to the container
         blockContainer.appendChild(block);
     });
@@ -1463,12 +1796,12 @@ async function checkPlayerBalance(amount){
 function checkNetwork(){
     // Check if MetaMask is installed and enabled
     if (typeof ethereum !== 'undefined' && ethereum.isMetaMask) {
-        // Request access to the user's MetaMask accounts
+        //get current chain id
         ethereum.request({ method: 'eth_chainId' })
         .then(chainId => {
-            // Check if the network is the desired network
+            // Check if the network is the maal testnet or other
             console.log("this is "+chainId)
-            if (chainId !== '0x1eb4') { 
+            if (chainId !== '0x1eb4') { //0x1eb4 is maal testnet chain ID
                 // Prompt the user to switch networks
                 if (confirm('Please switch to the Maal testnet to continue.')) {
                     SwitchChainToMaal();
@@ -1488,44 +1821,44 @@ function checkNetwork(){
 //if not maal test net then switch to maal test net
 async function SwitchChainToMaal(){
     try {
-        console.log("in try switch network")
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1eb4' }],
-      });
-      location.reload();
+        //switch the netword to maal testnet network
+        await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1eb4' }],
+        });
+        //after change refresh the page
+        location.reload();
     } catch (switchError) {
       if (switchError.code === 4902) { // 4902 mean the network not at wallet
         //request to add the chain to wallet here
         if(confirm("Maal testnet Chain hasn't been added to the wallet! Do you want to add it now?")){
             addMaalTestNetwork();
         }
-        
       }
     }
 }
 //if no in wallet, add network to wallet
 async function addMaalTestNetwork() {
     try {
-      const result = await window.ethereum.request({
-        method: "wallet_addEthereumChain",
-        params: [{
-          chainId: "0x1eb4",
-          rpcUrls: ["https://rpc-bntest.maalscan.io"],
-          chainName: "MaalChain Testnet",
-          nativeCurrency: {
-            name: "MAAL",
-            symbol: "MAAL",
-            decimals: 18
-          },
-          blockExplorerUrls: ["https://testnet.maalscan.io/"]
-        }]
-      });
-      alert("Add network successfully")
-      location.reload();
+        //add maal testnet network to user wallet
+        const result = await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [{
+            chainId: "0x1eb4",
+            rpcUrls: ["https://rpc-bntest.maalscan.io"],
+            chainName: "MaalChain Testnet",
+            nativeCurrency: {
+                name: "MAAL",
+                symbol: "MAAL",
+                decimals: 18
+            },
+            blockExplorerUrls: ["https://testnet.maalscan.io/"]
+            }]
+        });
+        alert("Add network successfully")
+        location.reload();
     } catch (error){
-      alert("Something wrong "+error)
-      
+        alert("Something wrong " + error)
     }
 }    
 
